@@ -93,15 +93,15 @@ p1+p2+p3+p4 + plot_annotation(
 )
 
 ### Simulation iterations ###
-# Use quality_data_p - where the sim study has been perfromed 200 times
-load("quality_data_p.Rdata")
+# Use quality_data_dist
+load(paste0(sourcepath, "quality_data_dist.Rdata"))
 # Uses t from the simulation_study.R file based on the true contigency table
 # of Gez_sim data
 
 #Look at iterations of true_bias
-iter_true_bias <- rep(list(rep(NA, times = 200)), 15)
-for(i in 1:200){
-  true_bias_list_it <- lapply(est_p[1:i], FUN = function(x){x - t})
+iter_true_bias <- rep(list(rep(NA, times = 100)), 15)
+for(i in 1:100){
+  true_bias_list_it <- lapply(est_dist[1:i], FUN = function(x){x - t})
   true_bias_red_it <- Reduce('+', true_bias_list_it)
   true_bias_it <- (1/i)*true_bias_red_it
   for(j in 1:15){
@@ -109,14 +109,14 @@ for(i in 1:200){
   }
 }
 
-plot_iter <- function(x){plot(1:200, x, pch = 20)}
+plot_iter <- function(x){plot(1:100, x, pch = 20)}
 
 true_plots <- lapply(iter_true_bias, plot_iter)
 
-iter_true_var <- rep(list(rep(NA, times = 200)), 15)
-for(i in 1:200){
-  mean_est <- (1/i)*Reduce('+', est_p[1:i])
-  true_var_list_it <- lapply(est_p[1:i], FUN = function(x){(x - mean_est)^2})
+iter_true_var <- rep(list(rep(NA, times = 100)), 15)
+for(i in 1:100){
+  mean_est <- (1/i)*Reduce('+', est_dist[1:i])
+  true_var_list_it <- lapply(est_dist[1:i], FUN = function(x){(x - mean_est)^2})
   true_var_red_it <- Reduce('+', true_var_list_it)
   true_var_it <- (1/(i-1))*true_var_red_it
   for(j in 1:15){
@@ -124,11 +124,11 @@ for(i in 1:200){
   }
 }
 
-plot_iter <- function(x){plot(1:200, x, pch = 20)}
+plot_iter <- function(x){plot(1:100, x, pch = 20)}
 
 true_plots <- lapply(iter_true_var, plot_iter)
 
-it_data <- data.frame(iter = 1:200,
+it_data <- data.frame(iter = 1:100,
                       iter_bias_8 = iter_true_bias[[8]],
                       iter_bias_15 = iter_true_bias[[15]],
                       iter_var_6 = iter_true_var[[6]],
@@ -137,19 +137,19 @@ it_data <- data.frame(iter = 1:200,
                       iter_var_14 = iter_true_var[[14]])
 
 i1 <- ggplot(it_data, aes(x = iter, y = iter_bias_8)) +
-  geom_point() + ylim(-0.0015, 0.0025) +
+  geom_point() + ylim(-0.001, 0.004) +
   labs(x = "Number of iterations",
        y = "True Bias of Cell (3,3)")
 i2 <- ggplot(it_data, aes(x = iter, y = iter_bias_15)) +
-  geom_point() + ylim(0, 0.0025) +
+  geom_point() + ylim(0, 0.003) +
   labs(x = "Number of iterations",
        y = "True Bias of Cell (5,3)")
 i3 <- ggplot(it_data, aes(x = iter, y = iter_var_14)) +
-  geom_point() + ylim(1e-07, 2.5e-06) +
+  geom_point() + ylim(6.2e-07, 2.3e-06) +
   labs(x = "Number of iterations",
        y = "True Variance of Cell (4,3)")
 i4 <- ggplot(it_data, aes(x = iter, y = iter_var_11)) +
-  geom_point() + ylim(2.5e-07, 1.4e-06) +
+  geom_point() + ylim(0, 8e-07) +
   labs(x = "Number of iterations",
        y = "True Variance of Cell (1,3)")
 i1 + i2 + i3 + i4 + plot_annotation(
@@ -159,6 +159,8 @@ i1 + i2 + i3 + i4 + plot_annotation(
 ###################################
 ### Plots used in master thesis ###
 ###################################
+
+# Uses results from simulation study
 
 # Histograms of bias for random hotdeck procedure
 hist_bias_ran <- rep(list(rep(NA, times = 100)), 15)
