@@ -139,10 +139,10 @@ i3 <- ggplot(it_data, aes(x = iter, y = iter_var_14)) +
   geom_point() + ylim(6.2e-07, 2.3e-06) +
   labs(x = "Number of iterations",
        y = "True Variance of Cell (4,3)")
-i4 <- ggplot(it_data, aes(x = iter, y = iter_var_11)) +
+i4 <- ggplot(it_data, aes(x = iter, y = iter_var_12)) +
   geom_point() + ylim(0, 8e-07) +
   labs(x = "Number of iterations",
-       y = "True Variance of Cell (1,3)")
+       y = "True Variance of Cell (2,3)")
 i1 + i2 + i3 + i4 + plot_annotation(
   title = "True bias and variance over Simulation iterations"
 )
