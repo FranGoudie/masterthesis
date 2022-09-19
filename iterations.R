@@ -13,16 +13,7 @@ registerDoParallel(myCluster)
 clusterExport(myCluster, varlist = c("X", 'Y', 'Z',
                                      'hot_deck', 'quality_SM',
                                      "A", "B", "C", "CinB", "CinA"))
-k <- 1
-l <- 4
-iterations <- list()
 num <- c(10,20,30,40,50,60,70,80,90,100,130,160,190,220)
-myCluster <- parallel::makeCluster(detectCores(), type = "PSOCK",
-                                   output = "")
-registerDoParallel(myCluster)
-clusterExport(myCluster, varlist = c("X", 'Y', 'Z',
-                                     'dist_hotdeck', 'quality_SM',
-                                     "A", "B", "C", "CinB", "CinA"))
 
 iterations_to <- foreach(i=num,
                          .packages = c("tidyverse", "StatMatch"))%dopar%{
